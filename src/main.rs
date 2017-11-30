@@ -4,9 +4,14 @@
 
 
 
+
+
+
+
+
 use std::env;
 use std::fs::OpenOptions;
-use std::io::{Read, Write};
+use std::io::{Read, Write, Seek, SeekFrom};
 extern crate regex;
 
 use regex::Regex;
@@ -45,8 +50,11 @@ fn main() {
 			}
 
 			let replacement_str : &str = &replacement_string;
-			println!("{:?}", replacement_str);
-			file.write_all(re.replace(&file_string, replacement_str).as_bytes()).unwrap();
+			
+			let replacement_result = re.replace(&file_string, replacement_str);
+			
+			file.seek(SeekFrom::Start(0)).unwrap();
+			file.write_all(replacement_result.as_bytes()).unwrap();
 
 			println!("overwrote {}", filename);
 		} else {
