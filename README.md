@@ -8,38 +8,26 @@ One use of `increment_version_number` is to automate incrementing the ersion num
 
 save the following as a text file called `pre-push` and put it in your `.git/hooks` directory.
 
+Change `Cargo.toml` to the path of the file you want to update the version in.
+
 ```bash
 #!/bin/bash
 
 errors=0
 
-echo -n "Running tests... "
-if result=$(cargo test --color always 2>&1 -- ); then
-	echo "Tests passed"
+if result=$(increment_version_number Cargo.toml '(version = "\d+\.\d+\.)(\d+)' 2); then
+	 echo -e "$result"
+
+	 #separate commit
+	 #git commit -m'increment version'
+
+	 #fold increment into previous commit
+	 git commit --amend --no-edit
 else
-	echo "$result"
-	errors=1
+	 echo "$result"
+	 errors=1
 fi
 
-if [ "$errors" != 0 ]; then
-	echo "Failed"
-	exit 1
-else
-	if result=$(increment_version_number Cargo.toml '(version = "\d+\.\d+\.)(\d+)' 2); then
-		 echo -e "$result"
-
-		 git add Cargo.toml Cargo.lock
-
-		 #separate commit
-		 #git commit -m'increment version'
-
-		 #fold increment into previous commit
-		 git commit --amend --no-edit
-	else
-		 echo "$result"
-		 errors=1
-	fi
-fi
 
 if [ "$errors" != 0 ]; then
 	echo "Failed"
