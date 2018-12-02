@@ -15,8 +15,12 @@ Change `Cargo.toml` to the path of the file you want to update the version in.
 
 errors=0
 
-if result=$(increment_version_number Cargo.toml '(version = "\d+\.\d+\.)(\d+)' 2); then
+version_file = "Cargo.toml"
+
+if result=$(increment_version_number $version_file '(version = "\d+\.\d+\.)(\d+)' 2); then
 	 echo -e "$result"
+
+	 git add $version_file
 
 	 #separate commit
 	 #git commit -m'increment version'
@@ -37,3 +41,5 @@ else
 fi
 
 ```
+
+Another example that assumes you are using Rust and want to make sure `cargo test` passes before commiting is included in this folder as [pre-push](pre-push).
