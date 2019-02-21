@@ -4,7 +4,7 @@ This is a simple program to increment a version number in a text file.
 
 ## example pre-push hook
 
-One use of `increment_version_number` is to automate incrementing the ersion number on pushing to a git repo. Here is an example `pre-push` hook for that purpose. 
+One use of `increment_version_number` is to automate incrementing the version number on pushing to a git repo. Here is an example `pre-push` hook for that purpose. 
 
 save the following as a text file called `pre-push` and put it in your `.git/hooks` directory.
 
