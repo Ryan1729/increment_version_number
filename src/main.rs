@@ -48,7 +48,7 @@ fn main() {
             println!("overwrote {}", filename);
         } else {
             println!("No captures found!")
-        }
+        };
     } else {
         println!("usage: increment_version_number filename regex capture_indicator")
     } 
