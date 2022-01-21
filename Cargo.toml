@@ -3,6 +3,7 @@
 name = "increment_version_number"
 version = "0.2.2"
 authors = ["Ryan1729 <Ryan1729@gmail.com>"]
+edition = "2021"
 
 [dependencies]
 regex = "1.5"
