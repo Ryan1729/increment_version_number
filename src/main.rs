@@ -1,5 +1,5 @@
 use std::env;
-use std::fs::OpenOptions;
+use std::fs::File;
 use std::io::{Read, Write, Seek, SeekFrom};
 extern crate regex;
 
@@ -15,7 +15,7 @@ fn main() {
 
         let re = Regex::new(&regex).unwrap();
 
-        let mut file = OpenOptions::new().read(true).write(true).open(&filename).unwrap();
+        let mut file = File::options().read(true).write(true).open(&filename).unwrap();
         let mut file_string = String::new();
         file.read_to_string(&mut file_string).unwrap();
 
@@ -32,14 +32,14 @@ fn main() {
                 // looks like.
                 // See https://docs.rs/regex/latest/regex/struct.Regex.html#replacement-string-syntax
 
-                replacement_string.push_str(&format!("${{{}}}", i));
+                replacement_string.push_str(&format!("${{{i}}}"));
             }
 
-            replacement_string.push_str(&format!("{}", version));
+            replacement_string.push_str(&format!("{version}"));
 
             if cap.len() - 1 > capture_num {
                 for i in (capture_num + 1)..cap.len() {
-                    replacement_string.push_str(&format!("${{{}}}", i));
+                    replacement_string.push_str(&format!("${{{i}}}"));
                 }
             }
 
@@ -50,7 +50,7 @@ fn main() {
             file.seek(SeekFrom::Start(0)).unwrap();
             file.write_all(replacement_result.as_bytes()).unwrap();
 
-            println!("overwrote {}", filename);
+            println!("overwrote {filename}");
         } else {
             println!("No captures found!")
         };
