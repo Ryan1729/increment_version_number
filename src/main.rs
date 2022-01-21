@@ -26,8 +26,9 @@ fn main() {
 
             let mut replacement_string = String::new();
 
+            // The entire match is at index 0; that's why we skip it.
             for i in 1..capture_num {
-                // This outputs somthing like "${0}". We use braces to make sure
+                // This outputs somthing like "${1}". We use braces to make sure
                 // that the proper group is used, no matter what the input file
                 // looks like.
                 // See https://docs.rs/regex/latest/regex/struct.Regex.html#replacement-string-syntax
