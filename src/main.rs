@@ -27,21 +27,26 @@ fn main() {
             let mut replacement_string = String::new();
 
             for i in 1..capture_num {
+                // This outputs somthing like "${0}". We use braces to make sure
+                // that the proper group is used, no matter what the input file
+                // looks like.
+                // See https://docs.rs/regex/latest/regex/struct.Regex.html#replacement-string-syntax
+
                 replacement_string.push_str(&format!("${{{}}}", i));
             }
 
             replacement_string.push_str(&format!("{}", version));
 
-            if cap.len() - 1 > capture_num { 
+            if cap.len() - 1 > capture_num {
                 for i in (capture_num + 1)..cap.len() {
                     replacement_string.push_str(&format!("${{{}}}", i));
                 }
             }
 
             let replacement_str : &str = &replacement_string;
-            
+
             let replacement_result = re.replace(&file_string, replacement_str);
-            
+
             file.seek(SeekFrom::Start(0)).unwrap();
             file.write_all(replacement_result.as_bytes()).unwrap();
 
@@ -51,5 +56,5 @@ fn main() {
         };
     } else {
         println!("usage: increment_version_number filename regex capture_indicator")
-    } 
+    }
 }
